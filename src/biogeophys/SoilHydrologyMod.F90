@@ -377,6 +377,7 @@ contains
           dz               =>    col%dz                              , & ! Input:  [real(r8) (:,:) ]  layer depth (m)                                 
 
           t_soisno         =>    temperature_inst%t_soisno_col       , & ! Input:  [real(r8) (:,:) ]  soil temperature (Kelvin)                       
+          t_h2osfc         =>    temperature_inst%t_h2osfc_col       , & ! Input:  [real(r8) (:)   ]  surface water temperature (Kelvin) KSA2018                        
 
           frac_h2osfc      =>    waterstate_inst%frac_h2osfc_col     , & ! Input:  [real(r8) (:)   ]  fraction of ground covered by surface water (0 to 1)
           frac_h2osfc_nosnow  => waterstate_inst%frac_h2osfc_nosnow_col,    & ! Output: [real(r8) (:)   ] col fractional area with surface water greater than zero (if no snow present)
@@ -517,6 +518,15 @@ contains
                 qflx_surf(c)= qflx_surf(c) + qflx_infl_excess(c) 
                 qflx_infl_excess(c) = 0._r8
              endif
+
+             ! if surface water is frozen, send infiltration excess to runoff to
+             ! avoid artificial loop between snow and h2osfc. KSA2018  
+             if (h2osfcflag/=0 .and. t_h2osfc(c) <= tfrz) then
+                 ! shift infiltration excess from h2osfc input to surface runoff
+                qflx_in_h2osfc(c) =  qflx_in_h2osfc(c) - qflx_infl_excess(c)
+                qflx_surf(c)= qflx_surf(c) + qflx_infl_excess(c)
+                qflx_infl_excess(c) = 0._r8
+             end if
 
              qflx_in_h2osfc(c) =  qflx_in_h2osfc(c) - qflx_h2osfc_surf(c) 
 

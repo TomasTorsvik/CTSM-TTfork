@@ -204,7 +204,7 @@ contains
     !
     ! !USES:
     use shr_orb_mod
-    use clm_time_manager   , only : get_nstep
+    use clm_time_manager   , only : get_nstep, get_step_size !+tht add step_size
     use abortutils         , only : endrun
     use clm_varctl         , only : subgridflag, use_snicar_frc, use_fates
     use CLMFatesInterfaceMod, only : hlm_fates_interface_type
@@ -278,6 +278,9 @@ contains
     real(r8) :: mss_cnc_aer_in_frc_oc  (bounds%begc:bounds%endc,-nlevsno+1:0,sno_nbr_aer) ! mass concentration of aerosol species for OC forcing (col,lyr,aer) [kg kg-1]
     real(r8) :: mss_cnc_aer_in_frc_dst (bounds%begc:bounds%endc,-nlevsno+1:0,sno_nbr_aer) ! mass concentration of aerosol species for dust forcing (col,lyr,aer) [kg kg-1]
     real(r8) :: mss_cnc_aer_in_fdb     (bounds%begc:bounds%endc,-nlevsno+1:0,sno_nbr_aer) ! mass concentration of all aerosol species for feedback calculation (col,lyr,aer) [kg kg-1]
+
+    real(r8) :: dtavg !+tht land model time step (sec)
+
     real(r8), parameter :: mpe = 1.e-06_r8                                                ! prevents overflow for division by zero
     integer , parameter :: nband =numrad                                                  ! number of solar radiation waveband classes
     !-----------------------------------------------------------------------
@@ -355,8 +358,9 @@ contains
 
     ! Cosine solar zenith angle for next time step
 
+    dtavg=get_step_size() !+tht
     do g = bounds%begg,bounds%endg
-       coszen_gcell(g) = shr_orb_cosz (nextsw_cday, grc%lat(g), grc%lon(g), declinp1)
+       coszen_gcell(g) = shr_orb_cosz (nextsw_cday, grc%lat(g), grc%lon(g), declinp1, dtavg) !+tht dtavg
     end do
     do c = bounds%begc,bounds%endc
        g = col%gridcell(c)
@@ -685,7 +689,7 @@ contains
              !  (NEEDED FOR ENERGY CONSERVATION)
              do i = -nlevsno+1,1,1
               if (subgridflag == 0 .or. lun%itype(col%landunit(c)) == istdlak) then 
-                 if (ib == 1) then
+                if (ib == 1) then
                    flx_absdv(c,i) = flx_absd_snw(c,i,ib)*frac_sno(c) + &
                         ((1.-frac_sno(c))*(1-albsod(c,ib))*(flx_absd_snw(c,i,ib)/(1.-albsnd(c,ib))))
                    flx_absiv(c,i) = flx_absi_snw(c,i,ib)*frac_sno(c) + &

@@ -514,11 +514,11 @@ contains
        tape(t)%dov2xy = hist_dov2xy(t)
        tape(t)%nhtfrq = hist_nhtfrq(t)
        tape(t)%mfilt = hist_mfilt(t)
-       if (hist_ndens(t) == 1) then
+!       if (hist_ndens(t) == 1) then
           tape(t)%ncprec = ncd_double
-       else
-          tape(t)%ncprec = ncd_float
-       endif
+!       else
+!          tape(t)%ncprec = ncd_float
+!       endif
     end do
 
     ! Set time of beginning of current averaging interval
