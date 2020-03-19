@@ -71,7 +71,7 @@ contains
 ! !USES:
     use clmtype
     use shr_orb_mod
-    use clm_time_manager, only : get_nstep
+    use clm_time_manager, only : get_nstep, get_step_size !+tht get_step_size
 
 !
 ! !ARGUMENTS:
@@ -170,6 +170,7 @@ contains
 !EOP
 !
     real(r8), parameter :: mpe = 1.e-06_r8 ! prevents overflow for division by zero
+    real(r8) :: dtavg                      !+tht land model time step
     integer  :: fp,fc,g,c,p                ! indices
     integer  :: ib                         ! band index
     integer  :: ic                         ! 0=unit incoming direct; 1=unit incoming diffuse
@@ -288,8 +289,9 @@ contains
 
     ! Cosine solar zenith angle for next time step
 
+    dtavg=get_step_size() !+tht
     do g = lbg, ubg
-       coszen_gcell(g) = shr_orb_cosz (nextsw_cday, lat(g), lon(g), declinp1)
+       coszen_gcell(g) = shr_orb_cosz (nextsw_cday, lat(g), lon(g), declinp1, dtavg) !+tht dtavg
     end do
 
     ! Save coszen and declination values to  clm3 data structures for
