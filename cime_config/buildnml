@@ -60,6 +60,7 @@ def buildnml(case, caseroot, compname):
     run_reftod = case.get_value("RUN_REFTOD")
     glc_nec = case.get_value("GLC_NEC")
     mask = case.get_value("MASK_GRID")
+    ocn_grid = case.get_value("OCN_GRID")
 
     # -----------------------------------------------------
     # Set clmconf
@@ -230,8 +231,17 @@ def buildnml(case, caseroot, compname):
         create_namelist_infile(case, user_nl_file, namelist_infile, "\n".join(infile_lines))
 
         cmd = os.path.join(lnd_root,"bld","build-namelist")
-
-        command = ("%s -cimeroot %s -infile %s -csmdata %s -inputdata %s %s -namelist \"&clm_inparm  start_ymd=%s %s/ \" "
+        if ocn_grid == "tnx1v1" or ocn_grid == "tnx0.25v1" or ocn_grid == "tnx1v3" or ocn_grid == "tnx1v4" or ocn_grid == "tnx0.25v3" or ocn_grid == "tnx0.25v4":
+            command = ("%s -cimeroot %s -infile %s -csmdata %s -inputdata %s %s -namelist \"&clm_inparm  start_ymd=%s %s/ \" "
+                   "%s %s -res %s %s -clm_start_type %s -envxml_dir %s -l_ncpl %s "
+                   "-lnd_frac %s -glc_nec %s -co2_ppmv %s -co2_type %s -config %s "
+                   "%s %s %s %s -mask %s"
+                   %(cmd, _CIMEROOT, infile, din_loc_root, inputdata_file, ignore, start_ymd, clm_namelist_opts,
+                     nomeg, usecase, lnd_grid, clmusr, start_type, caseroot, lnd_ncpl,
+                     lndfrac_file, glc_nec, ccsm_co2_ppmv, clm_co2_type, config_cache_file,
+                     clm_bldnml_opts, spinup, tuning, gridmask, ocn_grid))
+        else:
+            command = ("%s -cimeroot %s -infile %s -csmdata %s -inputdata %s %s -namelist \"&clm_inparm  start_ymd=%s %s/ \" "
                    "%s %s -res %s %s -clm_start_type %s -envxml_dir %s -l_ncpl %s "
                    "-lnd_frac %s -glc_nec %s -co2_ppmv %s -co2_type %s -config %s "
                    "%s %s %s %s"
