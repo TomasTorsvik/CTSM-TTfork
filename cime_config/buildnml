@@ -231,7 +231,7 @@ def buildnml(case, caseroot, compname):
         create_namelist_infile(case, user_nl_file, namelist_infile, "\n".join(infile_lines))
 
         cmd = os.path.join(lnd_root,"bld","build-namelist")
-        if ocn_grid == "tnx1v1" or ocn_grid == "tnx0.25v1" or ocn_grid == "tnx1v3" or ocn_grid == "tnx1v4" or ocn_grid == "tnx0.25v3" or ocn_grid == "tnx0.25v4":
+        if ocn_grid == "tnx1v1" or ocn_grid == "tnx0.25v1" or ocn_grid == "tnx1v3" or ocn_grid == "tnx1v4" or ocn_grid == "tnx0.25v3" or ocn_grid == "tnx0.25v4" or ocn_grid == "tnx0.125v4":
             command = ("%s -cimeroot %s -infile %s -csmdata %s -inputdata %s %s -namelist \"&clm_inparm  start_ymd=%s %s/ \" "
                    "%s %s -res %s %s -clm_start_type %s -envxml_dir %s -l_ncpl %s "
                    "-lnd_frac %s -glc_nec %s -co2_ppmv %s -co2_type %s -config %s "
