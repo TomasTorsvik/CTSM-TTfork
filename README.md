@@ -1,6 +1,6 @@
 # Branches in NorESMhub/CTSM
 
-This repository has the following CTSM branches working with NorESM2:
+This repository has the following CTSM branches intended to facilitate working with NorESM2:
 
 - **master** - keep track with the master branch of [ESCOMP/CTSM](https://github.com/ESCOMP/CTSM).
   - This branch is used by [NorESMhub/NorESM_LandSites_Platform](https://github.com/NorESMhub/NorESM_LandSites_Platform)
