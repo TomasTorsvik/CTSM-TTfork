@@ -12,6 +12,8 @@ This repository has the following CTSM branches intended to facilitate working w
     - release-clm5.0.14-Nor_v1.0.1 - the tag working with NorESM2 tags: release-noresm2.0.2 
     - release-clm5.0.14-Nor_v1.0.0 - the tag working with NorESM2 tags: release-noresm2.0.1, release-noresm2.0.0 
 
+- **clm-Nor-dev** - The development branch for new CTSM features in NorESM, originates from NorESM2.0.x.  Developments are allowed to be answer changing, and pull requests can be sent to this branch.
+
 - **release-cesm2.2** - Copy of ESCOMP branch, base for release-cesm2.2.01-Nor branch.
 - **release-cesm2.2.01-Nor** - The branch used for the next phase of NorESM2 (under development).
 
