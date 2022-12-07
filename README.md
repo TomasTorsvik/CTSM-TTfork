@@ -8,6 +8,8 @@ This repository has the following CTSM branches intended to facilitate working w
 
 - **release-clm5.0.14-Nor** - The working branch used by NorESM2. Non-answer changing (with respect to NorESM2s CMIP6 version) pull requests should be sent to this branch. For other changes, new branches discuss with CTSM and NorESM core teams.
   - Tags in this branch help identifying the link to the NorESM2 releases:
+    - release-clm5.0.14-Nor_v1.0.4 - the tag working with NorESM2 noresm2 tags: release-noresm2.0.6
+    - release-clm5.0.14-Nor_v1.0.3 - the tag working with NorESM2 noresm2 tags: release-noresm2.0.5
     - release-clm5.0.14-Nor_v1.0.2 - the tag working with NorESM2 noresm2 tags: release-noresm2.0.4, release-noresm2.0.3
     - release-clm5.0.14-Nor_v1.0.1 - the tag working with NorESM2 tags: release-noresm2.0.2 
     - release-clm5.0.14-Nor_v1.0.0 - the tag working with NorESM2 tags: release-noresm2.0.1, release-noresm2.0.0 
