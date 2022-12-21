@@ -281,7 +281,7 @@ contains
 
   !===============================================================================
 
-  subroutine lnd_export( bounds, lnd2atm_inst, lnd2glc_inst, l2x)
+  subroutine lnd_export( bounds, lnd2atm_inst, lnd2glc_inst, l2x, atm2lnd_inst)
 
     !---------------------------------------------------------------------------
     ! !DESCRIPTION:
@@ -302,11 +302,13 @@ contains
     ! !ARGUMENTS:
     implicit none
     type(bounds_type) , intent(in)    :: bounds  ! bounds
+    type(atm2lnd_type), intent(inout) :: atm2lnd_inst ! clm land to atmosphere exchange data type
     type(lnd2atm_type), intent(inout) :: lnd2atm_inst ! clm land to atmosphere exchange data type
     type(lnd2glc_type), intent(inout) :: lnd2glc_inst ! clm land to atmosphere exchange data type
     real(r8)          , intent(out)   :: l2x(:,:)! land to coupler export state on land grid
     !
     ! !LOCAL VARIABLES:
+    real(r8) :: vmag
     integer  :: g,i,k ! indices
     integer  :: ier   ! error status
     integer  :: nstep ! time step index
@@ -330,7 +332,12 @@ contains
        l2x(index_l2x_Sl_anidf,i)    =  lnd2atm_inst%albi_grc(g,2)
        l2x(index_l2x_Sl_tref,i)     =  lnd2atm_inst%t_ref2m_grc(g)
        l2x(index_l2x_Sl_qref,i)     =  lnd2atm_inst%q_ref2m_grc(g)
-       l2x(index_l2x_Sl_u10,i)      =  lnd2atm_inst%u_ref10m_grc(g)
+       vmag = max(1e-6, sqrt(atm2lnd_inst%forc_u_grc(g)**2 + atm2lnd_inst%forc_v_grc(g)**2))
+       l2x(index_l2x_Sl_uas,i)      =  lnd2atm_inst%u_ref10m_grc(g) * &
+         atm2lnd_inst%forc_u_grc(g) / vmag 
+       l2x(index_l2x_Sl_vas,i)      =  lnd2atm_inst%u_ref10m_grc(g) * &
+         atm2lnd_inst%forc_v_grc(g) / vmag 
+       l2x(index_l2x_Sl_u10,i)      =  lnd2atm_inst%u_ref10m_grc(g) 
        l2x(index_l2x_Fall_taux,i)   = -lnd2atm_inst%taux_grc(g)
        l2x(index_l2x_Fall_tauy,i)   = -lnd2atm_inst%tauy_grc(g)
        l2x(index_l2x_Fall_lat,i)    = -lnd2atm_inst%eflx_lh_tot_grc(g)
