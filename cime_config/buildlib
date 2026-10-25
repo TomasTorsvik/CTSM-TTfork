@@ -3,7 +3,8 @@
 """
 build clm library
 """
-import sys, os, shutil, imp
+import sys, os, shutil
+from importlib.machinery import SourceFileLoader
 
 _CIMEROOT = os.environ.get("CIMEROOT")
 if _CIMEROOT is None:
@@ -51,7 +52,7 @@ def _main_func():
             cmd = os.path.join(os.path.join(lnd_root,"cime_config","buildcpp"))
             logger.info("     ...calling clm buildcpp to set build time options")
             try:
-                mod = imp.load_source("buildcpp", cmd)
+                mod = SourceFileLoader("buildcpp", cmd).load_module()
                 clm_cppdefs = mod.buildcpp(case)
             except:
                 raise

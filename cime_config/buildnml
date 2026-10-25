@@ -3,7 +3,8 @@
 """
 CLM namelist creator
 """
-import sys, os, shutil, imp, filecmp
+import sys, os, shutil, filecmp
+from importlib.machinery import SourceFileLoader
 
 _CIMEROOT = os.environ.get("CIMEROOT")
 if _CIMEROOT is None:
@@ -101,7 +102,7 @@ def buildnml(case, caseroot, compname):
             cmd = os.path.join(os.path.join(lnd_root,"cime_config","buildcpp"))
             logger.info("     ...calling clm buildcpp to set build time options")
             try:
-                mod = imp.load_source("buildcpp", cmd)
+                mod = SourceFileLoader("buildcpp", cmd).load_module()
                 mod.buildcpp(case)
             except:
                 raise
